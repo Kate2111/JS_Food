@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const webpack = require("webpack-stream");
-const sass = require("gulp-sass");
+const sass = require("gulp-sass")(require("sass"));
 const autoprefixer = require("autoprefixer");
 const cleanCSS = require("gulp-clean-css");
 const postcss = require("gulp-postcss");
@@ -19,7 +19,7 @@ gulp.task("build-js", () => {
                 .pipe(webpack({
                     mode: 'development',
                     output: {
-                        filename: 'script.js'
+                        filename: 'main.js'
                     },
                     watch: false,
                     devtool: "source-map",
