@@ -14,13 +14,13 @@
 @import './blocks/modal/modal';
 
 .show {
-    display: block;
+    display: block; //когда добавляем этот класс, елемент показывается
 }
 .hide {
-    display: none;
+    display: none; //этот класс скрывает элемент
 }
 .fade{
-    animation-name: fade;
+    animation-name: fade; // анимация
     animation-duration: 1.5s;
 }
 @keyframes fade {
