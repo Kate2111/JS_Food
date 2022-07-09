@@ -250,4 +250,57 @@ window.addEventListener('DOMContentLoaded', () => {
         '.menu .container',
     ).render();
 
+    //Урок 53
+    // Создание форм и отправка данных на сервер 
+    // Forms
+
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Загрузка',
+        succsess: 'Спасибо! Скоро мы свяжемся с вами',
+        failure: 'Что-то пошло не так...',
+    }
+
+    forms.forEach(item => {
+        posrData(item);
+    });
+
+    //функция которая отвечает за постинг данных
+    function posrData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // отменяем стандартное поведение браузера, нужно прописывать в начале 
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php'); //сначала вызываем метод open, чтобы настроить наш запрос
+            
+            request.setRequestHeader('Content-type', 'application/json');            
+            const formData = new FormData(form);
+
+            const object = {};
+            formData.forEach(function(value, key) {
+                object[key] = value;
+            });
+
+            request.send(formData);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
+                } else {
+                    statusMessage.textContent = message.failure
+                }
+            });
+        });
+    }
+
 });
