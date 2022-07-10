@@ -239,14 +239,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const forms = document.querySelectorAll('form');
   const message = {
     loading: 'Загрузка',
-    succsess: 'Спасибо! Скоро мы свяжемся с вами',
+    success: 'Спасибо! Скоро мы свяжемся с вами',
     failure: 'Что-то пошло не так...'
   };
   forms.forEach(item => {
-    posrData(item);
+    postData(item);
   }); //функция которая отвечает за постинг данных
 
-  function posrData(form) {
+  function postData(form) {
     form.addEventListener('submit', e => {
       e.preventDefault(); // отменяем стандартное поведение браузера, нужно прописывать в начале 
 
@@ -263,10 +263,12 @@ window.addEventListener('DOMContentLoaded', () => {
       formData.forEach(function (value, key) {
         object[key] = value;
       });
-      request.send(formData);
+      const json = JSON.stringify();
+      request.send(json);
       request.addEventListener('load', () => {
         if (request.status === 200) {
           console.log(request.response);
+          statusMessage.textContent = message.success;
           form.reset();
           setTimeout(() => {
             statusMessage.remove();
