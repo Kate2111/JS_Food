@@ -257,13 +257,13 @@ window.addEventListener('DOMContentLoaded', () => {
       const request = new XMLHttpRequest();
       request.open('POST', 'server.php'); //сначала вызываем метод open, чтобы настроить наш запрос
 
-      request.setRequestHeader('Content-type', 'application/json');
+      request.setRequestHeader('Content-Type', 'application/json');
       const formData = new FormData(form);
       const object = {};
       formData.forEach(function (value, key) {
         object[key] = value;
       });
-      const json = JSON.stringify();
+      const json = JSON.stringify(object);
       request.send(json);
       request.addEventListener('load', () => {
         if (request.status === 200) {
