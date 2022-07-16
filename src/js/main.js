@@ -1,4 +1,4 @@
-const { SassList } = require("sass");
+/* const { SassList } = require("sass"); */
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -309,6 +309,8 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    //Урок 54. Красивое оповещение пользователя
+
     function showThanksModal(message) {
         const prevVodalDialog = document.querySelector('.modal__dialod');
 
