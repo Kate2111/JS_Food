@@ -25,6 +25,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-postcss": "^9.0.1",
     "gulp-sass": "^5.1.0",
+    "json-server": "^0.17.0",
     "sass": "^1.52.2",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
