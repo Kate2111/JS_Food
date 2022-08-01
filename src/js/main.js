@@ -203,8 +203,8 @@ window.addEventListener('DOMContentLoaded', () => {
             const element = document.createElement('div');
 
             if(this.classes.length === 0) {
-                this.element = 'menu__item';
-                element.classList.add(this.element);
+                this.classes = 'menu__item';
+                element.classList.add(this.classes);
             } else {
                 this.classes.forEach(className => element.classList.add(className));
             }
@@ -223,22 +223,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const getResource = async (url) => {
-        const res = await fetch(url)
-
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-        }
-
-        return await res.json();
-    };
-
     getResource('http://localhost:3000/menu')
         .then(data => {
-            data.forEach(({img, altimg, titl, descr, price}) => {
-                new MenuCard(img, altimg, titl, descr, price, '.menu.container').render();
+            data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price, '.menu.container').render();
             });
         });
+    
 
      //Урок 53
     // Создание форм и отправка данных на сервер 
@@ -264,6 +255,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 }, 
                 body: data
         });
+
+        return await res.json();
+    };
+
+    async function getResource(url) {
+        const res = await fetch(url)
+
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
 
         return await res.json();
     };
@@ -303,8 +304,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 showThanksModal(message.failure);
             }).finally(() => {
                 form.reset();
-            })
-
+            });
         });
     }
     
