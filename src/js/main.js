@@ -103,7 +103,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const modalTrigger = document.querySelectorAll('[data-modal]');
     const modal = document.querySelector('.modal'); 
-    /* const modalCloseBtn = document.querySelector('[data-close]'); */  //в уроке 54 удаляем переменную, так каксоздаем закрытие окна для динамически созданного элемента
+    /* const modalCloseBtn = document.querySelector('[data-close]'); */  
+    //в уроке 54 удаляем переменную, так каксоздаем закрытие окна для динамически созданного элемента
 
     // т.к. код ниже используется два раза и более, нам необъодимо его вынести в отдельную функцию
 
@@ -126,7 +127,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     modalTrigger.forEach(btn => {
-        btn.addEventListener('click', openModal) 
+        btn.addEventListener('click', openModal); 
     });
 
     const modalTimerId = setTimeout(openModal, 50000);    //урок 44
@@ -171,7 +172,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     //Урок 44
-    // когда пользователь долистает страницу доконца, появится модальное окно showModalByScroll, но при этом как только сработает условие, мы удаляем обрабочиком события функцию showModalByScroll
+    // когда пользователь долистает страницу доконца, появится модальное окно showModalByScroll, но при этом как только сработает условие, 
+    //мы удаляем обрабочиком события функцию showModalByScroll
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
             openModal();
@@ -196,7 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         changeToRUS() {
-            this.price = this.price * this.transfer
+            this.price = this.price * this.transfer;
         }
 
         render() {
@@ -241,7 +243,7 @@ window.addEventListener('DOMContentLoaded', () => {
         loading: 'icons/veg.svg',
         success: 'Спасибо! Скоро мы свяжемся с вами',
         failure: 'Что-то пошло не так...',
-    }
+    };
 
     forms.forEach(item => {
         bindPostData(item);
@@ -260,14 +262,14 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     async function getResource(url) {
-        const res = await fetch(url)
+        const res = await fetch(url);
 
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status: ${res.status}`);
         }
 
         return await res.json();
-    };
+    }
 
     //функция которая отвечает за постинг данных
     function bindPostData(form) {
@@ -346,6 +348,9 @@ window.addEventListener('DOMContentLoaded', () => {
     })
         .then(response => response.json())
         .then(json => console.log(json)) */
+
+
+        
 
 });
 
