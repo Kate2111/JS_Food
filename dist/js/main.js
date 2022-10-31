@@ -211,8 +211,8 @@ window.addEventListener('DOMContentLoaded', () => {
       const element = document.createElement('div');
 
       if (this.classes.length === 0) {
-        this.element = 'menu__item';
-        element.classList.add(this.element);
+        this.classes = 'menu__item';
+        element.classList.add(this.classes);
       } else {
         this.classes.forEach(className => element.classList.add(className));
       }
@@ -232,9 +232,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  new MenuCard("img/tabs/vegy.jpg", "vegy", 'Меню "Фитнес"', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 9, '.menu .container').render();
-  new MenuCard("img/tabs/elite.jpg", "elite", 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 12, '.menu .container').render();
-  new MenuCard("img/tabs/post.jpg", "post", 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 7, '.menu .container').render(); //Урок 53
+  getResource('http://localhost:3000/menu').then(data => {
+    data.forEach(_ref => {
+      let {
+        img,
+        altimg,
+        title,
+        descr,
+        price
+      } = _ref;
+      new MenuCard(img, altimg, title, descr, price, '.menu.container').render();
+    });
+  }); //Урок 53
   // Создание форм и отправка данных на сервер 
   // Forms
 
@@ -245,10 +254,32 @@ window.addEventListener('DOMContentLoaded', () => {
     failure: 'Что-то пошло не так...'
   };
   forms.forEach(item => {
-    postData(item);
-  }); //функция которая отвечает за постинг данных
+    bindPostData(item);
+  });
 
-  function postData(form) {
+  const postData = async (url, data) => {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data
+    });
+    return await res.json();
+  };
+
+  async function getResource(url) {
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+    }
+
+    return await res.json();
+  } //функция которая отвечает за постинг данных
+
+
+  function bindPostData(form) {
     form.addEventListener('submit', e => {
       e.preventDefault(); // отменяем стандартное поведение браузера, нужно прописывать в начале 
 
@@ -259,26 +290,26 @@ window.addEventListener('DOMContentLoaded', () => {
                 margin: 0 auto;
             `;
       form.insertAdjacentElement('afterend', statusMessage);
+      /*  //убираем, так как будем использовать fetch
       const request = new XMLHttpRequest();
       request.open('POST', 'server.php'); //сначала вызываем метод open, чтобы настроить наш запрос
+       */
 
-      request.setRequestHeader('Content-Type', 'application/json');
       const formData = new FormData(form);
-      const object = {};
-      formData.forEach(function (value, key) {
-        object[key] = value;
-      });
-      const json = JSON.stringify(object);
-      request.send(json);
-      request.addEventListener('load', () => {
-        if (request.status === 200) {
-          console.log(request.response);
-          showThanksModal(message.success);
-          form.reset();
-          statusMessage.remove();
-        } else {
-          showThanksModal(message.failure);
-        }
+      /* const object = {};
+      formData.forEach(function(value, key) {
+          object[key] = value;
+      }); */
+
+      const json = JSON.stringify(Object.fromEntries(formData.entries()));
+      postData('http://localhost:3000/requests', json).then(data => {
+        console.log(data);
+        showThanksModal(message.success);
+        statusMessage.remove();
+      }).catch(() => {
+        showThanksModal(message.failure);
+      }).finally(() => {
+        form.reset();
       });
     });
   } //Урок 54. Красивое оповещение пользователя
@@ -304,7 +335,79 @@ window.addEventListener('DOMContentLoaded', () => {
       prevModalDialog.classList.remove('hide');
       closeModal();
     }, 4000);
+  } // Урок 56. Fetch API and promice
+
+  /* fetch('http://localhost:3000/menu', {
+      method: "POST",
+      body: JSON.stringify({name: 'Alex'}),
+      headers: {
+          'Content-type': 'applicatiom/json'
+      }
+  })
+      .then(response => response.json())
+      .then(json => console.log(json)) */
+  // slider
+  // Урок 61 - 1 вариант
+
+  /* 
+  const slides = document.querySelectorAll('.offer__slide');
+  const prev = document.querySelector('.offer__slider-prev');
+  const next = document.querySelector('.offer__slider-next');
+  const total = document.querySelector('#total');
+  const current  = document.querySelector('#current');
+  let slideIndex = 1; 
+    showSlides(slideIndex);
+    if (slides.length < 10) {
+      total.textContent = `0${slides.length}`;
+  } else { 
+      total.textContent = slides.length;
   }
+    function showSlides(n)  {
+      if (n > slides.length) {
+          slideIndex = 1;
+      }
+        if (n < 1) {
+          slideIndex = slides.length;
+      }
+        slides.forEach(item => item.style.display = 'none');
+        slides[slideIndex - 1].style.display = 'block';
+        if (slides.length < 10) {
+          current.textContent = `0${slideIndex}`;
+      } else { 
+          current.textContent = slideIndex;
+      } 
+  }
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+  }
+    next.addEventListener('click', () => {
+      plusSlides(1);
+  });
+    prev.addEventListener('click', () => {
+      plusSlides(-1);
+  });
+  */
+  //Урок 62 - 2 вариант
+  // В этом варианте, дополнительно добавили обертку "offer__slider-inner" в html 
+
+
+  const slides = document.querySelectorAll('.offer__slide');
+  const prev = document.querySelector('.offer__slider-prev');
+  const next = document.querySelector('.offer__slider-next');
+  const total = document.querySelector('#total');
+  const current = document.querySelector('#current');
+  const slidesWrapper = document.querySelector('.offer__slider-wrapper'); //назначим свойство , это значит, что все что не подходит под ширину этого блока, будет скрыто и невидимо для пользователя 
+
+  const slidesField = document.querySelector('.offer__slider-inner');
+  const width = window.getComputedStyle(slidesWrapper).width; // будем использовать Computed styles - примененные стили от css, их можем получать при помощи скриптов
+
+  let slideIndex = 1; //Устанавливаем блоку ширину,чтобы мы могли полностью поместить все слайды в slidesField
+
+  slidesField.style.width = 100 * slides.length + '%'; //используем %,так как прописываем css стили
+
+  slides.forEach(slide => {
+    slide.style.width = width; //устанавливаем ширину каждому отдельному слайду
+  });
 });
 /******/ })()
 ;

@@ -103,8 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const modalTrigger = document.querySelectorAll('[data-modal]');
     const modal = document.querySelector('.modal'); 
-    /* const modalCloseBtn = document.querySelector('[data-close]'); */  
-    //в уроке 54 удаляем переменную, так каксоздаем закрытие окна для динамически созданного элемента
+    /* const modalCloseBtn = document.querySelector('[data-close]'); */  //в уроке 54 удаляем переменную, так каксоздаем закрытие окна для динамически созданного элемента
 
     // т.к. код ниже используется два раза и более, нам необъодимо его вынести в отдельную функцию
 
@@ -172,8 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     //Урок 44
-    // когда пользователь долистает страницу доконца, появится модальное окно showModalByScroll, но при этом как только сработает условие, 
-    //мы удаляем обрабочиком события функцию showModalByScroll
+    // когда пользователь долистает страницу доконца, появится модальное окно showModalByScroll, но при этом как только сработает условие, мы удаляем обрабочиком события функцию showModalByScroll
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
             openModal();
@@ -252,10 +250,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const postData = async (url, data) => {
         const res = await fetch(url, {
             method: "POST",
-                hesders: {
-                    'Content-Type': 'application/json'
-                }, 
-                body: data
+            headers: {
+                'Content-Type': 'application/json'
+            }, 
+            body: data
         });
 
         return await res.json();
@@ -349,8 +347,77 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(json => console.log(json)) */
 
+    
+    // slider
+    // Урок 61 - 1 вариант
 
-        
+    /* 
+    const slides = document.querySelectorAll('.offer__slide');
+    const prev = document.querySelector('.offer__slider-prev');
+    const next = document.querySelector('.offer__slider-next');
+    const total = document.querySelector('#total');
+    const current  = document.querySelector('#current');
+    let slideIndex = 1; 
+
+    showSlides(slideIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else { 
+        total.textContent = slides.length;
+    }
+
+    function showSlides(n)  {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+
+        slides[slideIndex - 1].style.display = 'block';
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else { 
+            current.textContent = slideIndex;
+        } 
+    }
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    next.addEventListener('click', () => {
+        plusSlides(1);
+    });
+
+    prev.addEventListener('click', () => {
+        plusSlides(-1);
+    });
+ */
+
+    //Урок 62 - 2 вариант
+    // В этом варианте, дополнительно добавили обертку "offer__slider-inner" в html 
+
+    const slides = document.querySelectorAll('.offer__slide');
+    const prev = document.querySelector('.offer__slider-prev');
+    const next = document.querySelector('.offer__slider-next');
+    const total = document.querySelector('#total');
+    const current  = document.querySelector('#current');
+    const slidesWrapper = document.querySelector('.offer__slider-wrapper'); //назначим свойство , это значит, что все что не подходит под ширину этого блока, будет скрыто и невидимо для пользователя 
+    const slidesField = document.querySelector('.offer__slider-inner');
+    const width = window.getComputedStyle(slidesWrapper).width;// будем использовать Computed styles - примененные стили от css, их можем получать при помощи скриптов
+    let slideIndex = 1; 
+
+    //Устанавливаем блоку ширину,чтобы мы могли полностью поместить все слайды в slidesField
+    slidesField.style.width = 100 * slides.length + '%'; //используем %,так как прописываем css стили
+    slides.forEach(slide => {
+        slide.style.width = width; //устанавливаем ширину каждому отдельному слайду
+    });
 
 });
 
