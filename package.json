@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://kate2111.github.io/Progect5_Food",
+  "homepage": "https://kate2111.github.io/Project5_Food",
   "scripts": {
     "deploy": "gh-pages -d dist"
   },
