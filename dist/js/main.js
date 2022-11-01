@@ -241,7 +241,7 @@ window.addEventListener('DOMContentLoaded', () => {
         descr,
         price
       } = _ref;
-      new MenuCard(img, altimg, title, descr, price, '.menu.container').render();
+      new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
     });
   }); //Урок 53
   // Создание форм и отправка данных на сервер 
@@ -401,12 +401,69 @@ window.addEventListener('DOMContentLoaded', () => {
   const slidesField = document.querySelector('.offer__slider-inner');
   const width = window.getComputedStyle(slidesWrapper).width; // будем использовать Computed styles - примененные стили от css, их можем получать при помощи скриптов
 
-  let slideIndex = 1; //Устанавливаем блоку ширину,чтобы мы могли полностью поместить все слайды в slidesField
+  let slideIndex = 1;
+  let offset = 0;
+
+  if (slides.length < 10) {
+    total.textContent = `0${slides.length}`;
+    current.textContent = `0${slideIndex}`;
+  } else {
+    total.textContent = slides.length;
+    current.textContent = slideIndex;
+  } //Устанавливаем блоку ширину,чтобы мы могли полностью поместить все слайды в slidesField
+
 
   slidesField.style.width = 100 * slides.length + '%'; //используем %,так как прописываем css стили
 
+  slidesField.style.display = 'flex';
+  slidesField.style.transition = '0.5s all';
+  slidesWrapper.style.overflow = 'hidden';
   slides.forEach(slide => {
     slide.style.width = width; //устанавливаем ширину каждому отдельному слайду
+  }); //обработчик собитий чтобы передвигать слайдер вперед
+
+  next.addEventListener('click', () => {
+    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+      offset = 0;
+    } else {
+      offset += +width.slice(0, width.length - 2);
+    }
+
+    slidesField.style.transform = `translateX(-${offset}px)`;
+
+    if (slideIndex == slides.length) {
+      slideIndex = 1;
+    } else {
+      slideIndex++;
+    }
+
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }); //обработчик собитий чтобы передвигать слайдер назад
+
+  prev.addEventListener('click', () => {
+    if (offset == 0) {
+      offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+    } else {
+      offset -= +width.slice(0, width.length - 2);
+    }
+
+    slidesField.style.transform = `translateX(-${offset}px)`;
+
+    if (slideIndex == 1) {
+      slideIndex = slides.length;
+    } else {
+      slideIndex--;
+    }
+
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
   });
 });
 /******/ })()
