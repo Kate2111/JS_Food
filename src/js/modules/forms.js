@@ -1,9 +1,12 @@
-function forms() {
+import {closeModal, openModal} from './modal';
+import {postData} from '../services/services';
+
+function forms(formSelector, modalTimerId) {
     //Урок 53
     // Создание форм и отправка данных на сервер 
     // Forms
 
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll(formSelector);
 
     const message = {
         loading: 'icons/veg.svg',
@@ -15,17 +18,6 @@ function forms() {
         bindPostData(item);
     });
 
-    const postData = async (url, data) => {
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            }, 
-            body: data
-        });
-
-        return await res.json();
-    };
 
     //функция которая отвечает за постинг данных
     function bindPostData(form) {
@@ -72,7 +64,7 @@ function forms() {
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide');
-        openModal();
+        openModal('.modal', modalTimerId);
 
         //создаем блок и присваеваем классы
         const thanksModal = document.createElement('div');
@@ -89,7 +81,7 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal();
+            closeModal('.modal');
         }, 4000);
     }
 
@@ -106,4 +98,4 @@ function forms() {
         .then(json => console.log(json)) */    
 }
 
-module.exports = forms;
+export default forms;

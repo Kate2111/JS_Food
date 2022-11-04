@@ -1,6 +1,4 @@
-function timer() {
-    const deadline = '2022-07-31';
-
+function timer(id, deadline) {
     function getTimeRemaining(endtime) { //задача функции получить разницу между датам
         //Date.parse(endtime) - получим колво милисекнд планируемой даты
         //Date.parse(new Date()) - текущая дата
@@ -52,7 +50,7 @@ function timer() {
         }
     }
 
-    setClock('.timer', deadline);
+    setClock(id, deadline);
 }
 
-module.exports = timer;
+export default timer;

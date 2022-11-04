@@ -1,67 +1,17 @@
-function slider() {
+function slider({container, slide, nextArrow, prevArrow, totalCounter, currentCounter, wrapper, field}) {
     // slider
-    // Урок 61 - 1 вариант slider
-
-    /* 
-    const slides = document.querySelectorAll('.offer__slide');
-    const prev = document.querySelector('.offer__slider-prev');
-    const next = document.querySelector('.offer__slider-next');
-    const total = document.querySelector('#total');
-    const current  = document.querySelector('#current');
-    let slideIndex = 1; 
-
-    showSlides(slideIndex);
-
-    if (slides.length < 10) {
-        total.textContent = `0${slides.length}`;
-    } else { 
-        total.textContent = slides.length;
-    }
-
-    function showSlides(n)  {
-        if (n > slides.length) {
-            slideIndex = 1;
-        }
-
-        if (n < 1) {
-            slideIndex = slides.length;
-        }
-
-        slides.forEach(item => item.style.display = 'none');
-
-        slides[slideIndex - 1].style.display = 'block';
-
-        if (slides.length < 10) {
-            current.textContent = `0${slideIndex}`;
-        } else { 
-            current.textContent = slideIndex;
-        } 
-    }
-
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    next.addEventListener('click', () => {
-        plusSlides(1);
-    });
-
-    prev.addEventListener('click', () => {
-        plusSlides(-1);
-    });
- */
 
     //Урок 62 - 2 вариант slider
     // В этом варианте, дополнительно добавили обертку "offer__slider-inner" в html 
 
-    const slides = document.querySelectorAll('.offer__slide');
-    const slider = document.querySelector('.offer__slider'); //Переменная для создания точек
-    const prev = document.querySelector('.offer__slider-prev');
-    const next = document.querySelector('.offer__slider-next');
-    const total = document.querySelector('#total');
-    const current  = document.querySelector('#current');
-    const slidesWrapper = document.querySelector('.offer__slider-wrapper'); //назначим свойство , это значит, что все что не подходит под ширину этого блока, будет скрыто и невидимо для пользователя 
-    const slidesField = document.querySelector('.offer__slider-inner');
+    const slides = document.querySelectorAll(slide);
+    const slider = document.querySelector(container); //Переменная для создания точек
+    const prev = document.querySelector(prevArrow);
+    const next = document.querySelector(nextArrow);
+    const total = document.querySelector(totalCounter);
+    const current  = document.querySelector(currentCounter);
+    const slidesWrapper = document.querySelector(wrapper); //назначим свойство , это значит, что все что не подходит под ширину этого блока, будет скрыто и невидимо для пользователя 
+    const slidesField = document.querySelector(field);
     const width = window.getComputedStyle(slidesWrapper).width;// будем использовать Computed styles - примененные стили от css, их можем получать при помощи скриптов
     let slideIndex = 1; 
     let offset = 0;
@@ -201,4 +151,4 @@ function slider() {
 
 }
 
-module.exports = slider;
+export default slider;
