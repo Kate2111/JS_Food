@@ -1,3 +1,3 @@
-# Progect5_Food
+# JS_Food
 
-https://kate2111.github.io/Project5_Food/
+https://kate2111.github.io/JS_Food/
