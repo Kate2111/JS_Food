@@ -1,6 +1,6 @@
 import {getResource} from '../services/services';
 
-function cards() {
+async function cards() {
      // Используем классы для карточек
      class MenuCard {
         constructor(src, alt, title, descr, price, parentSelector, ...classes) {
@@ -43,12 +43,16 @@ function cards() {
         }
     }
 
-    getResource('https://my-json-server.typicode.com/Kate2111/JS_Food/menu')
-        .then(data => {
-            data.forEach(({img, altimg, title, descr, price}) => {
-                new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-            });
-        }); 
+    
+    try {
+        const data = await getResource("menu");
+        console.log(data);
+        data.forEach(({ img, altimg, title, descr, price }) => {
+        new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+        });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 export default cards;

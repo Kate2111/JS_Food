@@ -10,7 +10,8 @@ module.exports = {
     path: __dirname + '/dist/js'
   },
   watch: true,
-  devtool: "source-map",
+  //devtool: "source-map",
+  devtool: "eval-source-map",
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

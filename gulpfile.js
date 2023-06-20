@@ -19,7 +19,7 @@ gulp.task("build-js", () => {
                 .pipe(webpack({
                     mode: 'development',
                     output: {
-                        filename: 'script.js'
+                        filename: 'bundle.js'
                     },
                     watch: false,
                     devtool: "source-map",
