@@ -16377,7 +16377,6 @@ async function cards() {
   }
   try {
     const data = await (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)("menu");
-    console.log(data);
     data.forEach(_ref => {
       let {
         img,
@@ -16426,8 +16425,7 @@ function forms(formSelector, modalTimerId) {
   //функция которая отвечает за постинг данных
   function bindPostData(form) {
     form.addEventListener('submit', e => {
-      e.preventDefault(); // отменяем стандартное поведение браузера, нужно прописывать в начале 
-
+      e.preventDefault();
       const statusMessage = document.createElement('img');
       statusMessage.src = message.loading;
       statusMessage.style.cssText = `
@@ -16435,18 +16433,8 @@ function forms(formSelector, modalTimerId) {
                 margin: 0 auto;
             `;
       form.insertAdjacentElement('afterend', statusMessage);
-      /*  //убираем, так как будем использовать fetch
-      const request = new XMLHttpRequest();
-      request.open('POST', 'server.php'); //сначала вызываем метод open, чтобы настроить наш запрос
-       */
-
       const formData = new FormData(form);
-
-      /* const object = {};
-      formData.forEach(function(value, key) {
-          object[key] = value;
-      }); */
-
+      console.log(formData);
       const json = JSON.stringify(Object.fromEntries(formData.entries()));
       (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json).then(data => {
         console.log(data);
@@ -16860,31 +16848,22 @@ function timer(id, deadline) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getResource": function() { return /* binding */ getResource; },
-/* harmony export */   "postData": function() { return /* binding */ postData; }
+/* harmony export */   "getResource": function() { return /* binding */ getResource; }
 /* harmony export */ });
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/esm/index.esm.js");
 /* harmony import */ var firebase_database__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/database */ "./node_modules/firebase/database/dist/esm/index.esm.js");
-const postData = async (url, data) => {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: data
-  });
-  return await res.json();
-};
-
-/* async function getResource() {
-    const res = await fetch('https://my-project-53597-default-rtdb.asia-southeast1.firebasedatabase.app/menu');
-
-    if (!res.ok) {
-        throw new Error(`Could not fetch ${'https://my-project-53597-default-rtdb.asia-southeast1.firebasedatabase.app/menu'}, status: ${res.status}`);
-    }
+/* const postData = async (url, data) => {
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+        body: data
+    });
 
     return await res.json();
-} */
+};
+ */
 
 
 
@@ -16906,7 +16885,6 @@ function getResource(recourse) {
     (0,firebase_database__WEBPACK_IMPORTED_MODULE_1__.get)(recourseRef).then(snapshot => {
       if (snapshot.exists()) {
         const recourseValue = snapshot.val();
-        console.log(recourseValue);
         resolve(recourseValue);
       } else {
         console.log("Данные отсутствуют");
@@ -16919,6 +16897,7 @@ function getResource(recourse) {
   });
 }
 
+//export {postData};
 
 
 /***/ }),

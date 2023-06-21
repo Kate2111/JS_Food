@@ -22,7 +22,7 @@ function forms(formSelector, modalTimerId) {
     //функция которая отвечает за постинг данных
     function bindPostData(form) {
         form.addEventListener('submit', (e) => {
-            e.preventDefault(); // отменяем стандартное поведение браузера, нужно прописывать в начале 
+            e.preventDefault(); 
 
             const statusMessage = document.createElement('img');
             statusMessage.src = message.loading;
@@ -31,18 +31,9 @@ function forms(formSelector, modalTimerId) {
                 margin: 0 auto;
             `;
             form.insertAdjacentElement('afterend', statusMessage);
-            /*  //убираем, так как будем использовать fetch
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php'); //сначала вызываем метод open, чтобы настроить наш запрос
-             */
                       
             const formData = new FormData(form);
-            
-            /* const object = {};
-            formData.forEach(function(value, key) {
-                object[key] = value;
-            }); */
-
+            console.log(formData);
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             postData('http://localhost:3000/requests', json)
