@@ -16377,18 +16377,25 @@ async function cards() {
   }
   try {
     const data = await (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.getResource)("menu");
-    data.forEach(_ref => {
-      let {
-        img,
-        altimg,
-        title,
-        descr,
-        price
-      } = _ref;
-      new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-    });
+    if (data && Array.isArray(data)) {
+      data.forEach(_ref => {
+        let {
+          img,
+          altimg,
+          title,
+          descr,
+          price
+        } = _ref;
+        new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+      });
+    } else {
+      throw new Error("Ошибка при получении данных из базы данных");
+    }
   } catch (error) {
     console.error(error);
+    const errorMessage = document.createElement('div');
+    errorMessage.textContent = "Произошла ошибка при загрузке данных. Пожалуйста, повторите попытку позже.";
+    document.querySelector('.menu__field').firstElementChild.appendChild(errorMessage);
   }
 }
 /* harmony default export */ __webpack_exports__["default"] = (cards);
@@ -16434,10 +16441,8 @@ function forms(formSelector, modalTimerId) {
             `;
       form.insertAdjacentElement('afterend', statusMessage);
       const formData = new FormData(form);
-      console.log(formData);
       const json = JSON.stringify(Object.fromEntries(formData.entries()));
-      (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', json).then(data => {
-        console.log(data);
+      (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)(json).then(() => {
         showThanksModal(message.success);
         statusMessage.remove();
       }).catch(() => {
@@ -16472,20 +16477,7 @@ function forms(formSelector, modalTimerId) {
       (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
     }, 4000);
   }
-
-  // Урок 56. Fetch API and promice
-
-  /* fetch('http://localhost:3000/menu', {
-      method: "POST",
-      body: JSON.stringify({name: 'Alex'}),
-      headers: {
-          'Content-type': 'applicatiom/json'
-      }
-  })
-      .then(response => response.json())
-      .then(json => console.log(json)) */
 }
-
 /* harmony default export */ __webpack_exports__["default"] = (forms);
 
 /***/ }),
@@ -16513,7 +16505,6 @@ function openModal(modalSelector, modalTimerId) {
   modal.classList.add('show');
   modal.classList.remove('hide');
   document.body.style.overflow = 'hidden';
-  console.log(modalTimerId);
   if (modalTimerId) {
     clearInterval(modalTimerId); //если пользователь сам открыл модельное окна, то наш скрипт setTimeout не откроет модально окно
   }
@@ -16848,22 +16839,12 @@ function timer(id, deadline) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getResource": function() { return /* binding */ getResource; }
+/* harmony export */   "getResource": function() { return /* binding */ getResource; },
+/* harmony export */   "postData": function() { return /* binding */ postData; }
 /* harmony export */ });
+/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/esm/index.esm.js");
 /* harmony import */ var firebase_database__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/database */ "./node_modules/firebase/database/dist/esm/index.esm.js");
-/* const postData = async (url, data) => {
-    const res = await fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        }, 
-        body: data
-    });
-
-    return await res.json();
-};
- */
 
 
 
@@ -16896,8 +16877,19 @@ function getResource(recourse) {
     });
   });
 }
+function postData(data) {
+  const enterId = (0,nanoid__WEBPACK_IMPORTED_MODULE_2__.nanoid)(5);
+  const recourseRef = (0,firebase_database__WEBPACK_IMPORTED_MODULE_1__.ref)(db, "Users/" + enterId);
+  return new Promise((resolve, reject) => {
+    (0,firebase_database__WEBPACK_IMPORTED_MODULE_1__.set)(recourseRef, data).then(() => {
+      resolve(data);
+    }).catch(error => {
+      console.error(error);
+      reject(error);
+    });
+  });
+}
 
-//export {postData};
 
 
 /***/ }),
@@ -20178,6 +20170,76 @@ function wrap(value) {
 const unwrap = (value) => reverseTransformCache.get(value);
 
 
+
+
+/***/ }),
+
+/***/ "./node_modules/nanoid/index.browser.js":
+/*!**********************************************!*\
+  !*** ./node_modules/nanoid/index.browser.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "customAlphabet": function() { return /* binding */ customAlphabet; },
+/* harmony export */   "customRandom": function() { return /* binding */ customRandom; },
+/* harmony export */   "nanoid": function() { return /* binding */ nanoid; },
+/* harmony export */   "random": function() { return /* binding */ random; },
+/* harmony export */   "urlAlphabet": function() { return /* reexport safe */ _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__.urlAlphabet; }
+/* harmony export */ });
+/* harmony import */ var _url_alphabet_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./url-alphabet/index.js */ "./node_modules/nanoid/url-alphabet/index.js");
+
+let random = bytes => crypto.getRandomValues(new Uint8Array(bytes))
+let customRandom = (alphabet, defaultSize, getRandom) => {
+  let mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1
+  let step = -~((1.6 * mask * defaultSize) / alphabet.length)
+  return (size = defaultSize) => {
+    let id = ''
+    while (true) {
+      let bytes = getRandom(step)
+      let j = step
+      while (j--) {
+        id += alphabet[bytes[j] & mask] || ''
+        if (id.length === size) return id
+      }
+    }
+  }
+}
+let customAlphabet = (alphabet, size = 21) =>
+  customRandom(alphabet, size, random)
+let nanoid = (size = 21) =>
+  crypto.getRandomValues(new Uint8Array(size)).reduce((id, byte) => {
+    byte &= 63
+    if (byte < 36) {
+      id += byte.toString(36)
+    } else if (byte < 62) {
+      id += (byte - 26).toString(36).toUpperCase()
+    } else if (byte > 62) {
+      id += '-'
+    } else {
+      id += '_'
+    }
+    return id
+  }, '')
+
+
+/***/ }),
+
+/***/ "./node_modules/nanoid/url-alphabet/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/nanoid/url-alphabet/index.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "urlAlphabet": function() { return /* binding */ urlAlphabet; }
+/* harmony export */ });
+const urlAlphabet =
+  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
 
 
 /***/ })

@@ -1,18 +1,4 @@
-
-
-/* const postData = async (url, data) => {
-    const res = await fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        }, 
-        body: data
-    });
-
-    return await res.json();
-};
- */
-
+import { nanoid } from 'nanoid';
 import { initializeApp } from "firebase/app";
 import { getDatabase, get, set, remove, ref, child } from "firebase/database";
 
@@ -51,8 +37,23 @@ function getResource(recourse) {
 }
 
 
+function postData(data) {
+  const enterId = nanoid(5);
+  const recourseRef = ref(db, "Users/" + enterId);
+  return new Promise((resolve, reject) => {
+    set(recourseRef,data)
+    .then(() => {
+      resolve(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      reject(error);
+    });
+  });
+}
 
 
-//export {postData};
+
+export {postData};
 export {getResource};
 

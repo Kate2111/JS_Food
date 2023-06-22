@@ -33,12 +33,10 @@ function forms(formSelector, modalTimerId) {
             form.insertAdjacentElement('afterend', statusMessage);
                       
             const formData = new FormData(form);
-            console.log(formData);
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            postData('http://localhost:3000/requests', json)
-            .then(data => {
-                console.log(data);
+            postData(json)
+            .then(() => {
                 showThanksModal(message.success);
                 statusMessage.remove();
             }).catch(() => {
@@ -75,18 +73,6 @@ function forms(formSelector, modalTimerId) {
             closeModal('.modal');
         }, 4000);
     }
-
-    // Урок 56. Fetch API and promice
-
-    /* fetch('http://localhost:3000/menu', {
-        method: "POST",
-        body: JSON.stringify({name: 'Alex'}),
-        headers: {
-            'Content-type': 'applicatiom/json'
-        }
-    })
-        .then(response => response.json())
-        .then(json => console.log(json)) */    
 }
 
 export default forms;

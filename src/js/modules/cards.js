@@ -46,11 +46,18 @@ async function cards() {
     
     try {
         const data = await getResource("menu");
-        data.forEach(({ img, altimg, title, descr, price }) => {
-        new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-        });
+        if (data && Array.isArray(data)) {
+          data.forEach(({ img, altimg, title, descr, price }) => {
+            new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+          });
+        } else {
+          throw new Error("Ошибка при получении данных из базы данных");
+        }
     } catch (error) {
         console.error(error);
+        const errorMessage = document.createElement('div');
+        errorMessage.textContent = "Произошла ошибка при загрузке данных. Пожалуйста, повторите попытку позже.";
+        document.querySelector('.menu__field').firstElementChild.appendChild(errorMessage);
     }
 }
 
