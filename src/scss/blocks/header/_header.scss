@@ -3,11 +3,15 @@
     justify-content: space-between;
     align-items: center;
     height: 150px;
-    padding: 0 100px;
+    padding: 30px 100px 0;
     &__left-block {
         display: flex;
         justify-content: space-between;
         min-width: 550px;
+    }
+    &__right-block{
+        display: flex;
+        gap: 20px;
     }
     &__logo {
         max-width: 170px;
@@ -20,21 +24,15 @@
         align-items: center;
     }
     &__link {
-        position: relative;
         margin-right: 45px;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
         color: $dark;
-        &:after {
-            content: '';
-            position: absolute;
-            display: block;
-            width: 110%;
-            left: -5%;
-            bottom: -1px;
-            z-index: -1;
-            height: 8px;
-            background: $primary;
+        &:hover{
+            mix-blend-mode: normal;
+            opacity: 0.7;
+            border-radius: 1px;
+            color: $primary;
         }
         &:last-child {
             margin-right: 0;

@@ -18,6 +18,8 @@ window.addEventListener('DOMContentLoaded', () => {
     cards();
     forms('form', modalTimerId);
     modal('[data-modal]', '.modal', modalTimerId);
+    modal('[data-auth]', '.auth');
+    modal('[data-reg]', '.registration');
     tabs('.tabheader__item', '.tabcontent', '.tabheader__items', 'tabheader__item_active');
     timer('.timer', '2023-11-30');
     slider({
@@ -30,6 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
         wrapper: '.offer__slider-wrapper',
         field: '.offer__slider-inner',
     });
+    
 });
 
 

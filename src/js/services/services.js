@@ -52,8 +52,6 @@ function postData(data) {
   });
 }
 
-
-
 export {postData};
 export {getResource};
 
