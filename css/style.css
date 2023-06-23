@@ -10,9 +10,23 @@ a {
   text-decoration: none;
 }
 
+html, body {
+  height: 100%;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .btn {
-  width: 220px;
-  height: 65px;
+  width: 200px;
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,9 +38,13 @@ a {
   cursor: pointer;
   transition: 0.3s all;
   outline: none;
+  border-radius: 10px;
 }
 .btn_white {
   background-color: #fff;
+  font-size: 16px;
+  width: 165px;
+  height: 44px;
 }
 .btn_dark {
   background-color: #303030;
@@ -62,12 +80,16 @@ a {
   justify-content: space-between;
   align-items: center;
   height: 150px;
-  padding: 0 100px;
+  padding: 30px 100px 0;
 }
 .header__left-block {
   display: flex;
   justify-content: space-between;
   min-width: 550px;
+}
+.header__right-block {
+  display: flex;
+  gap: 20px;
 }
 .header__logo {
   max-width: 170px;
@@ -80,22 +102,16 @@ a {
   align-items: center;
 }
 .header__link {
-  position: relative;
   margin-right: 45px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   color: #303030;
 }
-.header__link:after {
-  content: "";
-  position: absolute;
-  display: block;
-  width: 110%;
-  left: -5%;
-  bottom: -1px;
-  z-index: -1;
-  height: 8px;
-  background: #54ED39;
+.header__link:hover {
+  mix-blend-mode: normal;
+  opacity: 0.7;
+  border-radius: 1px;
+  color: #54ED39;
 }
 .header__link:last-child {
   margin-right: 0;
@@ -564,7 +580,7 @@ a {
   text-align: right;
 }
 
-.modal {
+.modal, .auth, .registration {
   position: fixed;
   top: 0;
   left: 0;
@@ -575,11 +591,11 @@ a {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.modal__dialog {
+.modal__dialog, .auth__dialog, .registration__dialog {
   max-width: 500px;
   margin: 40px auto;
 }
-.modal__content {
+.modal__content, .auth__content, .registration__content {
   position: relative;
   width: 100%;
   padding: 40px;
@@ -589,7 +605,7 @@ a {
   max-height: 80vh;
   overflow-y: auto;
 }
-.modal__close {
+.modal__close, .auth__close, .registration__close {
   position: absolute;
   top: 8px;
   right: 14px;
@@ -601,12 +617,12 @@ a {
   background-color: transparent;
   cursor: pointer;
 }
-.modal__title {
+.modal__title, .auth__title, .registration__title {
   text-align: center;
   font-size: 22px;
   text-transform: uppercase;
 }
-.modal__input {
+.modal__input, .auth__input, .registration__input {
   display: block;
   margin: 20px auto 20px auto;
   width: 280px;
@@ -619,7 +635,7 @@ a {
   padding: 0 20px;
   outline: none;
 }
-.modal .btn {
+.modal .btn, .auth .btn, .registration .btn {
   display: block;
   width: 280px;
   margin: 0 auto;
